@@ -1,0 +1,13 @@
+check,result,detail
+one row per zone-hour (train),PASS,
+one row per zone-hour (test),PASS,
+exactly 12 canonical zones (train),PASS,12 zones
+exactly 12 canonical zones (test),PASS,12 zones
+row count unchanged by joins (train),PASS,84614 rows
+"test row count is 4,032",PASS,4032 rows
+no negative trips retained,PASS,
+no rain sentinel (-9999) left,PASS,
+temperature within physical range,PASS,
+all timestamps on the EAT clock / in range,PASS,
+train and test share the feature columns,PASS,
+no forecast-time-unknown column used as a feature,PASS,

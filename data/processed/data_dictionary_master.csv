@@ -1,0 +1,36 @@
+column,type,source,description,derivation
+record_id/row_id,string,trips,unique row id (join key for scoring),as given
+zone,string,trips,canonical Addis Ababa zone,mapped from raw spelling
+zone_id,int,dim_zone,numeric zone key 1-12,canonical order
+pickup_hour,string,trips,raw hour text (kept for traceability),as given
+pickup_datetime,datetime,trips,"start of hour, EAT UTC+3",parsed from mixed formats
+trips,float,trips,TARGET trips requested in zone-hour,target (train only)
+avg_fare_birr,float,trips,"avg fare (operational, NOT a feature)",-1 -> NaN
+avg_wait_min,float,trips,"avg rider wait (operational, NOT a feature)",-1 -> NaN
+active_drivers,int,trips,"drivers active (operational, NOT a feature)",as given
+weather_datetime,datetime,weather,"hour of weather reading, EAT",Z +3h; local kept
+temp_c,float,weather,air temperature C,F->C for >35; sentinel->NaN; median imputed
+rain_mm,float,weather,"rain in previous hour, mm",-9999 -> NaN; median imputed
+humidity_pct,float,weather,relative humidity %,NaN -> median
+wind_kmh,float,weather,wind speed km/h,NaN -> median
+data_type,string,weather,observed / forecast,as given
+temp_c_missing,int,weather,1 if temp reading was missing,isna flag
+rain_mm_missing,int,weather,1 if rain reading was missing,isna flag
+humidity_pct_missing,int,weather,1 if humidity reading was missing,isna flag
+wind_kmh_missing,int,weather,1 if wind reading was missing,isna flag
+has_event,int,events,1 if any event reaches this zone-hour,interval join
+event_count,int,events,number of overlapping events,interval join
+has_sports,int,events,football/sports event in window,event_type
+has_concert,int,events,concert in window,event_type
+has_conference,int,events,conference in window,event_type
+has_road_closure,int,events,road closure in window,event_type
+has_public_holiday,int,events,public holiday,event_type
+has_school_break,int,events,school break period,event_type
+has_exhibition,int,events,exhibition,event_type
+event_attendance,float,events,max expected attendance in window,free text parsed
+event_before,int,events,in the 2h before an event,interval join
+event_during,int,events,during an event,interval join
+event_after,int,events,in the 2h after an event,interval join
+hours_to_event,float,events,hours until next event start (-1 if none),interval join
+hours_since_event,float,events,hours since last event end (-1 if none),interval join
+outlier_trips,int,trips,1 if the trips value was x8-scaled (repaired),trips/supply ratio > 2

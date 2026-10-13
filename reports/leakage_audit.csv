@@ -1,0 +1,61 @@
+feature,category,formula,rationale,known_at_forecast_time
+zone_id,zone,dim_zone.zone_id,zone identity 1-12,yes
+hour,calendar,pickup_datetime.dt.hour,diurnal demand cycle,yes
+dayofweek,calendar,pickup_datetime.dt.dayofweek,weekday pattern,yes
+day,calendar,day of month,pay-period effects,yes
+month,calendar,month,seasonal trend,yes
+weekofyear,calendar,iso week,within-year seasonality,yes
+is_weekend,calendar,dayofweek>=5,weekend leisure demand,yes
+is_payday,calendar,"day in 1-3,28-31",salary spending pulse,yes
+hour_sin,calendar,sin(2*pi*hour/24),smooth time-of-day,yes
+hour_cos,calendar,cos(2*pi*hour/24),smooth time-of-day,yes
+dow_sin,calendar,sin(2*pi*dow/7),smooth day-of-week,yes
+dow_cos,calendar,cos(2*pi*dow/7),smooth day-of-week,yes
+days_since_start,trend,date - 2025-01-01,captures growth trend,yes
+temp_c,weather,weather temp (F fixed),heat/comfort effect,yes
+rain_mm,weather,previous-hour rain,rain demand effect,yes
+is_raining,weather,rain_mm>0.05,rain yes/no,yes
+heavy_rain,weather,rain_mm>7.6,heavy-rain flag,yes
+rain_class,weather,cut(rain_mm),non-linear rain response,yes
+rain_3h_sum,weather,rolling 3h rain,sustained-rain effect,yes
+rain_6h_sum,weather,rolling 6h rain,wet-spell effect,yes
+rain_24h_sum,weather,rolling 24h rain,all-day wetness,yes
+rain_is_raining_x_hour,weather,is_raining*hour,rain x time-of-day,yes
+humidity_pct,weather,weather humidity,comfort,yes
+wind_kmh,weather,weather wind,minor comfort,yes
+has_event,events,interval join,event demand uplift,yes
+event_count,events,overlap count,crowd of events,yes
+has_sports,events,event_type,stadium match uplift,yes
+has_concert,events,event_type,concert uplift,yes
+has_conference,events,event_type,conference demand,yes
+has_road_closure,events,event_type,detours/supply,yes
+has_public_holiday,events,event_type,holiday demand shift,yes
+has_school_break,events,event_type,school-holiday pattern,yes
+has_exhibition,events,event_type,exhibition demand,yes
+event_attendance,events,parsed crowd size,event size,yes
+event_before,events,2h before,pre-event inflow,yes
+event_during,events,during,in-event demand,yes
+event_after,events,2h after,post-event dispersal,yes
+has_sports_evening,events,has_sports * (hour>=17),evening match uplift,yes
+event_after_evening,events,event_after * (hour>=17),evening dispersal peak,yes
+hours_to_event,events,hours to next start,anticipation,yes
+hours_since_event,events,hours since last end,dispersal decay,yes
+lag_336h,history,trips 14 days ago,same slot last fortnight,yes
+lag_672h,history,trips 28 days ago,same slot last month,yes
+hist_zone_dow_hour_mean,history,expanding mean by zone/dow/hour,seasonal baseline,yes
+hist_zone_hour_mean,history,expanding mean by zone/hour,diurnal baseline,yes
+hist_zone_dow_mean,history,expanding mean by zone/dow,weekly baseline,yes
+hist_zone_mean,history,expanding mean by zone,zone level,yes
+hist_zdh_recent8w,history,8-week zone/dow/hour mean before cutoff,current regime profile,yes
+hist_zh_recent8w,history,8-week zone/hour mean before cutoff,current regime diurnal,yes
+hist_zone_recent_7d,history,mean last 7 days of history,recent level,yes
+hist_zone_recent_14d,history,mean last 14 days of history,recent level,yes
+hist_zone_recent_28d,history,mean last 28 days of history,recent level,yes
+hist_zone_recent_56d,history,mean last 56 days of history,recent level,yes
+rel_recent_7d,history,recent_7d / zone/dow/hour mean,recent-vs-profile level,yes
+rel_recent_14d,history,recent_14d / zone/dow/hour mean,recent-vs-profile level,yes
+rel_recent_28d,history,recent_28d / zone/dow/hour mean,recent-vs-profile level,yes
+trend_index,trend,"trailing city level, capped extrapolation",extrapolates growth,yes
+active_drivers,operational,trip log,NOT available at forecast time,NO
+avg_wait_min,operational,trip log,consequence of demand,NO
+avg_fare_birr,operational,trip log,surge consequence,NO

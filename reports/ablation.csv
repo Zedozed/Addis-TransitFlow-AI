@@ -1,0 +1,5 @@
+configuration,RMSE,MAE,R2,MAPE_%,robust_RMSE,robust_R2
+calendar+zone+trend,9.663,6.3641,0.8722,28.41,9.663,0.8722
+calendar+zone+trend+weather,9.2829,6.1732,0.882,28.56,9.2829,0.882
+calendar+zone+trend+events,8.7197,5.9062,0.8959,27.2,8.7197,0.8959
+calendar+zone+trend+weather+events,8.3858,5.7391,0.9037,27.86,8.3858,0.9037

@@ -1,0 +1,55 @@
+master_train (84614, 34) | master_test (4032, 30)
+train (79188, 57) | val (3914, 57) | target cap 147 | rows excluded from scoring 0
+  CatBoost               RMSE 8.522  MAE 5.786  R2 0.901  robust_R2 0.901
+  LightGBM               RMSE 8.837  MAE 5.985  R2 0.893  robust_R2 0.893
+  XGBoost                RMSE 8.827  MAE 5.962  R2 0.893  robust_R2 0.893
+  HistGradientBoosting   RMSE 8.758  MAE 5.939  R2 0.895  robust_R2 0.895
+  GradientBoosting       RMSE 8.775  MAE 5.918  R2 0.895  robust_R2 0.895
+  RandomForest           RMSE 8.729  MAE 5.891  R2 0.896  robust_R2 0.896
+  ExtraTrees             RMSE 8.699  MAE 5.852  R2 0.896  robust_R2 0.896
+  DecisionTree           RMSE 10.193  MAE 6.853  R2 0.858  robust_R2 0.858
+  KNN                    RMSE 9.701  MAE 6.407  R2 0.871  robust_R2 0.871
+  MLP                    RMSE 8.585  MAE 5.973  R2 0.899  robust_R2 0.899
+  Ridge                  RMSE 9.209  MAE 6.414  R2 0.884  robust_R2 0.884
+  Lasso                  RMSE 9.373  MAE 6.439  R2 0.880  robust_R2 0.880
+  tuned params: {'learning_rate': 0.04, 'l2_leaf_reg': 3.0, 'iterations': 800, 'depth': 6}
+  blend Ensemble: CatBoost + MLP (blended): RMSE 8.352 R2 0.904 robust_R2 0.904
+C:\Users\darus\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\neural_network\_multilayer_perceptron.py:781: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet.
+  warnings.warn(
+C:\Users\darus\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\neural_network\_multilayer_perceptron.py:781: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet.
+  warnings.warn(
+C:\Users\darus\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\neural_network\_multilayer_perceptron.py:781: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet.
+  warnings.warn(
+C:\Users\darus\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\neural_network\_multilayer_perceptron.py:781: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet.
+  warnings.warn(
+  fold 2025-07-01: Ensemble: CatBoost + MLP (blended) RMSE 8.870 | naive 10.727 | robust_R2 0.872
+C:\Users\darus\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\neural_network\_multilayer_perceptron.py:781: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet.
+  warnings.warn(
+  fold 2025-08-05: Ensemble: CatBoost + MLP (blended) RMSE 8.681 | naive 11.429 | robust_R2 0.886
+C:\Users\darus\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\neural_network\_multilayer_perceptron.py:781: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet.
+  warnings.warn(
+  fold 2025-09-10: Ensemble: CatBoost + MLP (blended) RMSE 9.851 | naive 13.867 | robust_R2 0.869
+C:\Users\darus\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\neural_network\_multilayer_perceptron.py:781: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet.
+  warnings.warn(
+  fold 2025-10-17: Ensemble: CatBoost + MLP (blended) RMSE 8.304 | naive 11.105 | robust_R2 0.904
+C:\Users\darus\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\neural_network\_multilayer_perceptron.py:781: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (40) reached and the optimization hasn't converged yet.
+  warnings.warn(
+
+WINNER: Ensemble: CatBoost + MLP (blended) RMSE 8.3523 R2 0.9045 robust_R2 0.9045
+                              Model  train_time_s    RMSE     MAE      R2  MAPE_%  robust_RMSE  robust_R2
+ Ensemble: CatBoost + MLP (blended)         35.07  8.3523  5.7383  0.9045   28.82       8.3523     0.9045
+          CatBoostRegressor (tuned)         24.98  8.5079  5.7789  0.9009   26.80       8.5079     0.9009
+                           CatBoost         34.67  8.5218  5.7861  0.9006   26.78       8.5218     0.9006
+                                MLP         35.07  8.5849  5.9726  0.8991   31.90       8.5849     0.8991
+                         ExtraTrees         21.44  8.6990  5.8518  0.8964   26.13       8.6990     0.8964
+                       RandomForest         45.11  8.7285  5.8905  0.8957   26.42       8.7285     0.8957
+               HistGradientBoosting         21.38  8.7581  5.9391  0.8950   26.95       8.7581     0.8950
+                   GradientBoosting        161.91  8.7749  5.9185  0.8946   27.01       8.7749     0.8946
+                            XGBoost         35.39  8.8274  5.9624  0.8933   27.15       8.8274     0.8933
+                           LightGBM         16.15  8.8370  5.9854  0.8931   26.94       8.8370     0.8931
+                              Ridge          0.87  9.2087  6.4142  0.8839   38.77       9.2087     0.8839
+                              Lasso          3.44  9.3731  6.4391  0.8797   37.68       9.3731     0.8797
+                                KNN          3.21  9.7012  6.4070  0.8712   28.76       9.7012     0.8712
+                       DecisionTree          3.58 10.1930  6.8528  0.8578   29.67      10.1930     0.8578
+Seasonal-naive (zone/dow/hour mean)          0.00 11.2985  7.3600  0.8252   26.43      11.2985     0.8252
+          Mean predictor (baseline)          0.00 27.5381 20.6891 -0.0381  163.89      27.5381    -0.0381

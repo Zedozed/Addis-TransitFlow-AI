@@ -1,0 +1,24 @@
+file,column,issue_type,rows_affected,pct,fix,why
+ride_demand_train.csv,zone,inconsistent spelling / case / spacing,85460,100.0,mapped raw labels to 12 canonical zones via ZONE_MAP,join key must be identical across all three tables
+ride_demand_train.csv,zone + pickup_hour,duplicate records (zone-hour repeated under a different spelling/format),1692,1.98,"de-duplicated on (zone_id, pickup_datetime), keeping the first record",the duplicate carries the same trips value; summing would double-count
+ride_demand_train.csv,trips,negative sentinel (-1) used for 'no reading',675,0.79,set to NaN (missing),a negative trip count is impossible; it is a sentinel code
+ride_demand_train.csv,trips,missing target values,1512,1.77,kept as NaN; excluded from model fitting only,"we still must forecast this zone-hour, so the row stays"
+ride_demand_train.csv,avg_wait_min,negative sentinel (-1),1692,1.98,set to NaN,a negative wait time is impossible
+ride_demand_train.csv,avg_fare_birr,missing values,1269,1.48,kept NaN (analysis only; never a model input),fare is a forecast-time-unknown consequence of demand
+ride_demand_train.csv,trips,corrupted export: trips column scaled by x8 (trips/supply ~10x normal),125,0.146,repaired: trips <- trips/8 (flagged in `outlier_trips`),"trips/active_drivers is 9.8-14.1 vs the healthy max 1.85, so supply never responded; 99% of the flagged values are exact multiples of 8 and after /8 the ratio returns to 0.33-1.77 (mean 1.29) -- i.e. a x8 scaling bug in the export"
+ride_demand_test.csv,zone,inconsistent spelling / case / spacing,4032,100.0,mapped raw labels to 12 canonical zones via ZONE_MAP,join key must be identical across all three tables
+weather_hourly.csv,timestamp,mixed clock (UTC 'Z' rows mixed with local DD/MM/YYYY rows),7538,100.0,6806 UTC rows converted +3h to EAT; 732 local rows kept as-is,659/732 local rows already match a Z-row shifted +3h -> same instants
+weather_hourly.csv,temp_c,unit switch (part of the year recorded in Fahrenheit),353,4.68,converted (F-32)*5/9 for values > 35 (impossible in Addis),"values are cleanly bimodal: <=25 C vs 50-80 F, none in between"
+weather_hourly.csv,rain_mm,sentinel 'no reading' code (-9999),76,1.01,set to NaN,-9999 is an explicit missing-value code
+weather_hourly.csv,timestamp,duplicate hours with conflicting readings,1437,19.06,aggregated duplicate hours with the median,one reading per hour is required for a safe many-to-one join
+weather_hourly.csv,timestamp,missing whole hours (sensor dropouts / one outage),842,11.0,reindexed to a complete hourly series; numeric gaps time-interpolated,trip history has an hour every hour and must not lose rows to a weather gap
+weather_hourly.csv,temp_c,missing reading (sentinel or gap),876,11.44,time-interpolated (limit both directions) and flagged via *_missing,keeps the missingness signal while giving every hour a usable value
+weather_hourly.csv,rain_mm,missing reading (sentinel or gap),910,11.89,time-interpolated (limit both directions) and flagged via *_missing,keeps the missingness signal while giving every hour a usable value
+weather_hourly.csv,humidity_pct,missing reading (sentinel or gap),973,12.71,time-interpolated (limit both directions) and flagged via *_missing,keeps the missingness signal while giving every hour a usable value
+weather_hourly.csv,wind_kmh,missing reading (sentinel or gap),842,11.0,time-interpolated (limit both directions) and flagged via *_missing,keeps the missingness signal while giving every hour a usable value
+events_calendar.csv,event_type,inconsistent case / spacing (e.g. 'Football Match' vs 'football_match'),165,100.0,lower-cased and underscore-normalised,one label per event class is needed for grouping
+events_calendar.csv,end_datetime,missing or earlier-than-start end datetime,5,3.03,defaulted to start + 3 hours,an interval join needs a bounded window
+events_calendar.csv,zone,"spelling variants, parenthetical venue text, multi-zone and citywide cells",165,100.0,normalised to canonical zones; '&'-joined cells expanded; citywide expanded to all 12,events must attach to the trip zones they actually affect
+events_calendar.csv,expected_attendance,"free text ('approx 34000', '2,039') and blanks",54,32.73,parsed leading integer; blanks -> 0,attendance is a usable crowd-size feature
+join: trips + weather,weather_datetime,trip hours with no weather row,0,0.0,kept as NaN (indicators already present); no rows added or lost,weather must never duplicate trip rows in a many-to-one join
+join: trips + weather,weather_datetime,trip hours with no weather row,0,0.0,kept as NaN (indicators already present); no rows added or lost,weather must never duplicate trip rows in a many-to-one join
